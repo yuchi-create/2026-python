@@ -29,24 +29,32 @@
 
 ---
 
-## Week 12 本週：數論與位元運算
+## Week 12 本週：整除性、位元運算、矩陣搜尋
 
-- 課堂範例：[`in-class/`](./in-class/)（4 記憶層 R + 1 理解層 U）
+- 課堂範例：[`in-class/`](./in-class/)（4 記憶層 R + 1 理解層 U + 1 課堂活動）
 - 解題：[10812](./QUESTION-10812.md) | [10908](./QUESTION-10908.md) | [10922](./QUESTION-10922.md) | [10929](./QUESTION-10929.md) | [10931](./QUESTION-10931.md)
 - 作業：完成 5 題並提交到 `weeks/week-12/solutions/<student-id>/`
 
-| 範例 | 主題 |
-|------|------|
-| [R01](./in-class/R01-gcd-divisibility.py) | `math.gcd` / `math.lcm` / 數字位數和 / 9-degree |
-| [R02](./in-class/R02-big-number.py) | 大數字串處理 / 11 的倍數判斷（奇偶位交替）|
-| [R03](./in-class/R03-binary-bits.py) | `bin()` / `format(n,'b')` / 位元運算子 / 計算 1 的個數 |
-| [R04](./in-class/R04-matrix-search.py) | 2D 矩陣中心擴張 / 找最大全同字元正方形 |
-| [U01](./in-class/U01-number-theory.py) | 整合：Beat the Spread! / 2 the 9s / Can You Solve It? |
+### 課堂範例與題目對應
+
+| 範例 | 主題 | 對應題目 |
+|------|------|---------|
+| [R01](./in-class/R01-divisibility.py) | 整除性規則：數字位數和、9-degree、11 的倍數 | **10922**, **10929** |
+| [R02](./in-class/R02-big-number.py) | 大數字串讀入、逐位處理 | 10929 補充 |
+| [R03](./in-class/R03-binary-bits.py) | `bin()` / `format(n,'b')` / 位元運算 / 計算 1 的個數 | **10931** |
+| [R04](./in-class/R04-matrix-search.py) | 2D 矩陣中心擴張、找最大全同字元正方形 | **10908** |
+| [U01](./in-class/U01-number-theory.py) | 整合應用：Beat the Spread! / 2 the 9s / Can You Solve It? | **10812**, 10922, 10642 |
+| [U02 活動](./in-class/U02-gcd-blink-game.py) | 課堂暖身：LCM 閃燈視覺化（非必考，概念延伸）| — |
+
+> **注意**：本週核心是「整除性規則」與「二進位」，不是 GCD/LCM。
+> U02 閃燈遊戲是用來直觀感受 LCM 的課堂活動，與解題作業無直接關聯。
+
+### 解題清單
 
 | # | 題名 | 難度 | 核心概念 |
 |---|------|------|---------|
-| 10812 | UVA 10812 — Beat the Spread! | ⭐ | 線性方程：`(S+D)/2`，判斷整數解與非負 |
-| 10908 | UVA 10908 — Largest Square | ⭐ | 2D 矩陣中心擴張，最大全同字元正方形 |
-| 10922 | UVA 10922 — 2 the 9s | ⭐ | 遞迴數字和，9 的倍數與深度 |
-| 10929 | UVA 10929 | ⭐ | 大數（1000 位），11 的倍數判斷 |
+| 10812 | UVA 10812 — Beat the Spread! | ⭐ | 一元一次方程：`(S+D)/2`，判斷整數解與非負 |
+| 10908 | UVA 10908 — Largest Square | ⭐ | 2D 矩陣中心擴張，找最大全同字元正方形 |
+| 10922 | UVA 10922 — 2 the 9s | ⭐ | 遞迴數字位數和，判斷 9 的倍數與計算深度 |
+| 10929 | UVA 10929 | ⭐ | 大數（最多 1000 位）判斷是否為 11 的倍數 |
 | 10931 | UVA 10931 — Parity | ⭐ | 整數轉二進位，計算 1 的個數 |
