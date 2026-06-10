@@ -1,8 +1,16 @@
 _INSERTION_THRESHOLD = 16
 
 
+def _validate_list(data, func_name: str) -> None:
+    if data is None:
+        raise TypeError(f"{func_name}(): data must be a list, got None")
+    if not isinstance(data, list):
+        raise TypeError(f"{func_name}(): data must be a list, got {type(data).__name__}")
+
+
 def bubble_sort_fast(data: list) -> list:
     """Bubble sort 提前停止:一輪沒交換就直接結束"""
+    _validate_list(data, "bubble_sort_fast")
     result = data.copy()
     n = len(result)
     for i in range(n):
@@ -18,6 +26,7 @@ def bubble_sort_fast(data: list) -> list:
 
 def quick_sort_fast(data: list) -> list:
     """Quick sort + median-of-three + 小區間切 insertion sort"""
+    _validate_list(data, "quick_sort_fast")
     if len(data) <= 1:
         return data.copy()
     return _quick_sort(data, 0, len(data))

@@ -1,4 +1,12 @@
+def _validate_list(data, func_name: str) -> None:
+    if data is None:
+        raise TypeError(f"{func_name}(): data must be a list, got None")
+    if not isinstance(data, list):
+        raise TypeError(f"{func_name}(): data must be a list, got {type(data).__name__}")
+
+
 def bubble_sort(data: list) -> list:
+    _validate_list(data, "bubble_sort")
     result = data.copy()
     n = len(result)
     for i in range(n):
@@ -9,6 +17,7 @@ def bubble_sort(data: list) -> list:
 
 
 def quick_sort(data: list) -> list:
+    _validate_list(data, "quick_sort")
     if len(data) <= 1:
         return data.copy()
     pivot = data[len(data) // 2]
@@ -19,6 +28,7 @@ def quick_sort(data: list) -> list:
 
 
 def merge_sort(data: list) -> list:
+    _validate_list(data, "merge_sort")
     if len(data) <= 1:
         return data.copy()
     mid = len(data) // 2

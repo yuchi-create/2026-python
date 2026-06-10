@@ -51,6 +51,6 @@ if __name__ == "__main__":
             row += f"{data[str(n)]['mean']:>12.6f}"
         print(row)
 
-    with open("results.json", "w") as f:
+    with open("results.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
     print("\nresults.json 已儲存")
