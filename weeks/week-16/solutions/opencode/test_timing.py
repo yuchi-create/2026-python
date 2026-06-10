@@ -10,7 +10,7 @@
 import time
 import unittest
 
-# from timing import timeit  # 完成 timing.py 後解除註解
+from timing import timeit
 
 
 class TestTimeit(unittest.TestCase):
@@ -18,29 +18,65 @@ class TestTimeit(unittest.TestCase):
 
     def test_returns_original_result(self):
         """裝飾後函式回傳值與原函式相同"""
-        self.fail("尚未實作 — 自己打提示詞跟 AI 討論後補上")
+        @timeit
+        def add(a, b):
+            return a + b
+
+        result = add(3, 4)
+        self.assertEqual(result, 7)
 
     def test_preserves_function_metadata(self):
         """functools.wraps 保留 __name__ 與 __doc__"""
-        self.fail("尚未實作")
+        @timeit
+        def my_function():
+            """My docstring"""
+            pass
+
+        self.assertEqual(my_function.__name__, "my_function")
+        self.assertEqual(my_function.__doc__, "My docstring")
 
     def test_last_elapsed_and_records_updated(self):
         """呼叫後 last_elapsed 為正 float, records append 該次耗時"""
-        self.fail("尚未實作")
+        @timeit
+        def my_function():
+            pass
+
+        my_function()
+        self.assertIsInstance(my_function.last_elapsed, float)
+        self.assertGreater(my_function.last_elapsed, 0)
+        self.assertEqual(len(my_function.records), 1)
 
     def test_decorated_function_with_arguments(self):
         """有參數的函式仍正常執行並回傳正確值"""
-        self.fail("尚未實作")
+        @timeit
+        def multiply(x, y):
+            return x * y
+
+        result = multiply(6, 7)
+        self.assertEqual(result, 42)
+        self.assertIsInstance(multiply.last_elapsed, float)
 
     # ── Edge cases ──
 
     def test_function_returning_none(self):
         """EDGE: 回傳 None 的函式仍正確記錄耗時"""
-        self.fail("尚未實作")
+        @timeit
+        def returns_none():
+            return None
+
+        result = returns_none()
+        self.assertIsNone(result)
+        self.assertIsInstance(returns_none.last_elapsed, float)
+        self.assertEqual(len(returns_none.records), 1)
 
     def test_initial_state_before_any_call(self):
         """EDGE: 尚未呼叫時 records 為空 list, last_elapsed 為 None"""
-        self.fail("尚未實作")
+        @timeit
+        def my_function():
+            pass
+
+        self.assertEqual(my_function.records, [])
+        self.assertIsNone(my_function.last_elapsed)
 
 
 if __name__ == "__main__":
