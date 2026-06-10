@@ -10,11 +10,11 @@
 
 import unittest
 
-# from sorts import bubble_sort, quick_sort, merge_sort  # 完成 sorts.py 後解除註解
+from sorts import bubble_sort, quick_sort, merge_sort
 
 # 三個排序函式都放進這個 list,每個測試用 subTest 跑一輪;
 # Stage 3 的加速版 append 進來就能吃到同一組測試。
-SORT_FUNCTIONS = []  # 解除上面 import 後填入
+SORT_FUNCTIONS = [bubble_sort, quick_sort, merge_sort]
 
 
 class TestSortFunctions(unittest.TestCase):
@@ -22,9 +22,6 @@ class TestSortFunctions(unittest.TestCase):
 
     def test_basic_cases(self):
         """已排序、未排序、空 list、單一元素"""
-        if not SORT_FUNCTIONS:
-            self.fail("尚未匯入排序函式 — 先解除 import 註解")
-
         test_cases = [
             ([], []),
             ([1], [1]),
@@ -41,9 +38,6 @@ class TestSortFunctions(unittest.TestCase):
 
     def test_random_data_matches_builtin(self):
         """亂數資料排序結果與 sorted() 一致"""
-        if not SORT_FUNCTIONS:
-            self.fail("尚未匯入排序函式 — 先解除 import 註解")
-
         import random
         random.seed(42)
         data = [random.randint(-1000, 1000) for _ in range(100)]
@@ -55,9 +49,6 @@ class TestSortFunctions(unittest.TestCase):
 
     def test_input_not_mutated(self):
         """原始輸入 list 不可被排序函式修改"""
-        if not SORT_FUNCTIONS:
-            self.fail("尚未匯入排序函式 — 先解除 import 註解")
-
         original = [3, 1, 4, 1, 5]
         for sort_func in SORT_FUNCTIONS:
             with self.subTest(sort_func=sort_func.__name__):
@@ -69,9 +60,6 @@ class TestSortFunctions(unittest.TestCase):
 
     def test_all_identical_values(self):
         """EDGE: 所有元素相同"""
-        if not SORT_FUNCTIONS:
-            self.fail("尚未匯入排序函式 — 先解除 import 註解")
-
         data = [7] * 20
         for sort_func in SORT_FUNCTIONS:
             with self.subTest(sort_func=sort_func.__name__):
@@ -80,9 +68,6 @@ class TestSortFunctions(unittest.TestCase):
 
     def test_negative_and_mixed_numbers(self):
         """EDGE: 包含負數與零"""
-        if not SORT_FUNCTIONS:
-            self.fail("尚未匯入排序函式 — 先解除 import 註解")
-
         data = [0, -5, 3, -1, 2, -8, 7]
         for sort_func in SORT_FUNCTIONS:
             with self.subTest(sort_func=sort_func.__name__):
