@@ -3,7 +3,7 @@
 本週兩堂課的共同目標：**在接近期末考的壓力條件下，把 SOP 跑到不用看表也不會錯。**
 
 - 6/10 (三)：[計時演練](./0610-timed-drill.md) — 60 分鐘完賽，只准看精簡版檢查表
-- 6/11 (四)：[獨立演練](./0611-solo-drill.md) — 不給任何檢查表，全憑記憶
+- 6/11 (四)：[排序效能實驗室・分階段專題](./0611-sort-lab.md) — 不發檢查表；課堂完成 Stage 1–2 並開 PR，Stage 3–4 課後完成（6/17 前）
 
 ---
 
@@ -48,7 +48,8 @@
 ## 相關文件
 
 - [6/10 教案](./0610-timed-drill.md)
-- [6/11 教案](./0611-solo-drill.md)
+- [6/11 教案：排序效能實驗室](./0611-sort-lab.md)（starter：[`0611-sort-starter/`](./0611-sort-starter/)）
+- [6/11 備用教案：進位計數獨立演練](./0611-solo-drill.md)（未排入課程，保留作考前自主練習）
 - [SOP 檢查表・精簡版](../../week-15/in_class/exam-sop-checklist-lite.md)
 - [AI_LOG 範本](../../week-15/in_class/ai-log-template.md)
 - [Week 15 完整版檢查表](../../week-15/in_class/README.md#期末考-sop-檢查表學生版完整版)（本週課堂上**不准看**，課後複習用）
