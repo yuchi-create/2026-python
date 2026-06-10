@@ -9,10 +9,11 @@
 - 實作 bubble / quick / merge 三種排序,並用自己的裝飾器量測效能
 - 設計至少一種加速方案(Cython 化或演算法優化),用數據證明有效
 - 把實驗結果畫成圖,寫出可信的效能報告
+- 依 Python 安全程式原則自掃程式,修補並記錄安全問題
 
 ---
 
-## 專題總覽(四個階段)
+## 專題總覽(五個階段)
 
 | 階段 | 產出 | 紅燈 commit | 綠燈 commit |
 |------|------|------------|------------|
@@ -20,9 +21,19 @@
 | 2 | `sorts.py` + `benchmark.py` — 三種排序與量測 | `test: stage2 排序正確性測試` | `feat: stage2 實作三種排序與 benchmark` |
 | 3 | 加速版排序(Cython 或演算法優化) | `test: stage3 加速版共用正確性測試` | `feat: stage3 加速版與量測數據` |
 | 4 | `plot.py` + `assets/benchmark.png` | `test: stage4 繪圖輸出測試` | `feat: stage4 實驗結果圖表與報告` |
+| 5 | `test_security.py` + 安全自掃報告 | `test: stage5 安全性規則測試` | `feat: stage5 修正安全性問題` |
 
-`git log --reverse` 必須能看到 **test → feat 交替出現八次**(可穿插 `refactor:`)。
-任何一個階段「一開始就綠」或「先 feat 後 test」,該階段流程分 0 分。
+### 每個階段都跑同一個 TDD 循環
+
+| # | 步驟 | 做什麼 | 產出 |
+|---|------|--------|------|
+| 1 | **Read spec** | 讀該階段規格,確認函式簽名、行為、例外、驗收標準;不清楚的先問 AI 問清楚 | 你知道「做完長什麼樣」 |
+| 2 | **Dev for red** | 寫測試(AI 給的自己驗收),`python -m unittest` **全紅** | commit `test: stageN ...` |
+| 3 | **Dev for green** | 寫實作,跑到**全綠** | commit `feat: stageN ...` |
+| 4 | **Commit to branch** | push 到 `feature/wk16-0611-<學號>`,才進入下一階段 | 遠端有紀錄 |
+
+`git log --reverse` 必須能看到 **test → feat 交替出現十次**(可穿插 `refactor:`)。
+任何一個階段「一開始就綠」、「先 feat 後 test」或「跳過 Read spec 直接叫 AI 全包」,該階段流程分 0 分。
 
 ---
 
@@ -92,18 +103,45 @@ def plot_results(results: dict, out_path: str) -> None: ...
 - 測試需驗證 PNG 確實產生且非空檔;環境限制:`plot.py` 開頭加 `matplotlib.use("Agg")` 才能在無視窗環境跑
 - 在你的 `README.md` 貼圖並用 2–3 句解讀:誰最快?O(n²) 和 O(n log n) 的線斜率差在哪?加速比多少?
 
+## Stage 5｜安全性自掃(1:15–1:30)
+
+對照 [OpenSSF Secure Coding Guide for Python](https://best.openssf.org/Secure-Coding-Guide-for-Python/),
+掃自己 Stage 1–4 寫的程式,把**問題編成測試 → 修到綠**,跟前面同一個循環。
+
+只看這四章(不必讀完整本):
+
+| 章節 | 在這份程式裡查什麼 |
+|------|-------------------|
+| **08 Coding Standards** | 排序有沒有「邊迭代邊改 list」;有沒有 shadow 內建名稱;寫 `results.json`、存 PNG 有沒有用 `with` 關檔;有沒有拿 `assert` 當輸入驗證 |
+| **05 Exception Handling** | 開檔讀檔有沒有抓**具體例外**(不是 `except:` 全包);失敗有沒有正確 cleanup |
+| **03 Numbers** | 排序比較子、計時 float 累加、迴圈計數有沒有邊界/精度問題 |
+| **04 Neutralization** | 讀 `results.json` 用 `json` 還是 `pickle`?為什麼 `json` 較安全(CWE-502) |
+
+做法(紅 → 綠):
+
+1. 至少找出 **3 條**適用條目,每條寫一個會紅的測試放進 `test_security.py`
+   (例:`test_results_file_closed`、`test_make_data_rejects_negative`、`test_load_uses_json_not_pickle`)
+2. `python -m unittest` 確認紅 → commit `test: stage5 ...`;修 code 轉綠 → commit `feat: stage5 ...`
+3. 報告用表格記錄每條:OpenSSF 條目(CWE)/ 檢查結果 / 處理方式
+4. 掃到但判定**不適用**的也要寫一句理由(例:benchmark 的 `random` 非安全敏感,用 `random` 正確,不需改 `secrets`)
+
+> **重點不是把所有條目都「修掉」**,而是判斷哪些適用——盲目把 benchmark 的 `random` 改成 `secrets` 反而扣分。
+> (選做・加分)`pip install bandit && bandit -r .`,把工具輸出和你人工找到的對照,寫一句兩者差異。
+
 ---
 
-## 課堂節奏(90 分鐘,四階段全部課堂內完成)
+## 課堂節奏(90 分鐘,五階段全部課堂內完成)
 
-全程 AI 協作,沒有課後補交——**下課前 PR 要含全部四個階段**。
+全程 AI 協作,**下課前 PR 必須含全部五個階段**——沒有課後補交。
+節奏很緊,所以 Stage 1 一拿到題就要動;卡關時靠 AI 協作壓時間,但紅綠燈順序不能省。
 
 | 時間 | 內容 | 計時目標 |
 |------|------|---------|
-| 0:00–0:20 | Stage 1:開分支 → timeit 紅燈 → 綠燈 | ⏱ 0:20 前兩個 commit |
-| 0:20–0:50 | Stage 2:排序紅燈 → 綠燈 → benchmark + `results.json` | ⏱ 0:50 前兩個 commit;**建議此時先開出 PR** |
-| 0:50–1:10 | Stage 3:baseline + 加速版(過同一組測試) | ⏱ 1:10 前兩個 commit |
-| 1:10–1:30 | Stage 4:畫圖 → 報告 → `AI_LOG` / `TEST_LOG` → push | ⏱ **下課前 PR 四階段齊** |
+| 0:00–0:15 | Stage 1:開分支 → timeit 紅燈 → 綠燈 | ⏱ 0:15 前兩個 commit |
+| 0:15–0:40 | Stage 2:排序紅燈 → 綠燈 → benchmark + `results.json` | ⏱ 0:40 前兩個 commit;**建議此時先開出 PR** |
+| 0:40–1:00 | Stage 3:baseline + 加速版(過同一組測試) | ⏱ 1:00 前兩個 commit |
+| 1:00–1:15 | Stage 4:畫圖 → 報告 | ⏱ 1:15 前兩個 commit |
+| 1:15–1:30 | Stage 5:安全自掃 → 修補 → `AI_LOG` / `TEST_LOG` → push | ⏱ **下課前 PR 五階段齊** |
 
 - 分支:`feature/wk16-0611-<學號>`,PR 標題 `Week 16 - <學號> - <姓名>`
 - 所有檔案只能放在 `weeks/week-16/solutions/<學號>/0611/`(CI 會檢查)
@@ -118,7 +156,8 @@ weeks/week-16/solutions/<學號>/0611/
 ├── sorts_fast.pyx(或演算法優化版)
 ├── plot.py    test_plot.py
 ├── assets/benchmark.png
-├── README.md      # 實驗報告:方法、數據表、圖、解讀、加速比
+├── test_security.py
+├── README.md      # 實驗報告:方法、數據表、圖、解讀、加速比、安全自掃
 ├── AI_LOG.md      # 提示詞逐字記錄(規則同 6/10)
 └── TEST_LOG.md    # 每階段至少一紅一綠的 unittest 輸出
 ```
@@ -131,8 +170,11 @@ weeks/week-16/solutions/<學號>/0611/
 | Stage 2 三排序正確 + 共用測試 + benchmark 可重現 | 25 |
 | Stage 3 加速有效 + 通過共用測試 + 數據佐證 | 10 |
 | Stage 4 圖表正確 + 解讀合理 | 10 |
-| Code Style(命名、繁中註解、無重複測試碼) | 20 |
-| 報告與紀錄(README / AI_LOG / TEST_LOG / commit 順序) | 20 |
+| Stage 5 安全自掃 + 修補 + 不適用判斷合理 | 10 |
+| Code Style(命名、繁中註解、無重複測試碼) | 15 |
+| 報告與紀錄(README / AI_LOG / TEST_LOG / commit 順序) | 15 |
+
+> **五階段全部下課前完成**,以 PR 為準,沒有課後補交。未在下課前綠燈 push 的階段不計分。
 
 ---
 
@@ -142,7 +184,8 @@ weeks/week-16/solutions/<學號>/0611/
 2. 為什麼測試要驗「原 list 未被修改」?哪個排序最容易不小心改到?
 3. benchmark 為什麼要固定 seed、重複多次取平均?
 4. 你的加速方案如果只跑 n=500 看不出差異,該怎麼設計實驗?
-5. 八個 commit 的順序是什麼?哪一種順序會直接 0 流程分?
+5. 十個 commit 的順序是什麼?哪一種順序會直接 0 流程分?
+6. 安全自掃時,哪一條你判定「不適用」?理由是什麼?
 
 ---
 
