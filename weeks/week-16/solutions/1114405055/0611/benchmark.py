@@ -1,4 +1,4 @@
-"""Stage 2 — 排序效能量測
+"""Stage 2 + Stage 3 — 排序效能量測（含 baseline sorted 與加速版）
 
 執行：python benchmark.py
 輸出：比較表（stdout）+ results.json
@@ -7,7 +7,7 @@
 import json
 import random
 
-from sorts import bubble_sort, merge_sort, quick_sort
+from sorts import bubble_sort, merge_sort, quick_sort, quick_sort_med3
 from timing import timeit
 
 
@@ -23,6 +23,7 @@ def run_benchmark(sizes=(500, 1000, 2000, 4000), repeats=3) -> dict:
         "bubble_sort": timeit(bubble_sort),
         "quick_sort": timeit(quick_sort),
         "merge_sort": timeit(merge_sort),
+        "quick_sort_med3": timeit(quick_sort_med3),
         "timsort_builtin": timeit(sorted),
     }
     results: dict = {name: {} for name in algos}
