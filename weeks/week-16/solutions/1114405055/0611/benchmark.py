@@ -13,6 +13,8 @@ from timing import timeit
 
 def make_data(n: int, seed: int = 42) -> list:
     """產生固定亂數序列，seed 固定以確保實驗可重現"""
+    if n < 0:
+        raise ValueError("n 必須 >= 0")
     rng = random.Random(seed)
     return [rng.randint(0, n * 10) for _ in range(n)]
 
