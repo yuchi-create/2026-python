@@ -6,9 +6,9 @@ Stage 3 的加速版直接 append 進 SORT_FUNCTIONS 即可吃到同一組測試
 import random
 import unittest
 
-from sorts import bubble_sort, merge_sort, quick_sort
+from sorts import bubble_sort, merge_sort, quick_sort, quick_sort_med3
 
-SORT_FUNCTIONS = [bubble_sort, quick_sort, merge_sort]
+SORT_FUNCTIONS = [bubble_sort, quick_sort, merge_sort, quick_sort_med3]
 
 
 class TestSortFunctions(unittest.TestCase):
