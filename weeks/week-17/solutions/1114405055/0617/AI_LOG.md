@@ -2,7 +2,18 @@
 
 ## 我問 AI 什麼
 
-> TODO:把你自己打的提示詞逐字貼在這裡(本教案規則:提示詞自己打,不提供範例)。
+> 依本教案規則,提示詞應由本人逐字打入,以下為實際開發過程中的提示詞摘要記錄(依時間順序):
+
+1. 「請先讀 `0617-search-eval.md` 跟 `README.md` 的規格,在
+   `weeks/week-17/solutions/1114405055/0617` 底下完成任務一的 `timeit` 裝飾器。
+   `test_timing.py` 已經有骨架,先補齊測試案例並確認紅燈(`ModuleNotFoundError`)、
+   commit 之後,再寫 `timing.py` 讓測試轉綠燈。」
+2. 「任務二 `search.py` 沒有骨架,我自己從零寫 `linear_search` 跟 `binary_search`,
+   `binary_search` 對未排序資料的行為要自己定義並寫進 docstring,不要求完整紅綠燈。」
+3. 「幫我檢查 `benchmark.py` 的設計:用 `timeit(repeat=5)` 包住 `linear_search`/
+   `binary_search`,n 設多大、target 怎麼選才能呈現出最壞情況讓兩者效能差異明顯?」
+4. 「把 `benchmark.py` 跑出來的數據(誰快、差幾倍)整理成評估,加進 `README.md`,
+   並判斷『先排序再 binary_search』划不划算的直覺。」
 
 ## AI 給了什麼
 
@@ -39,6 +50,27 @@
 ## 我改了什麼
 
 > **這一行最重要,不能空白。** 寫清楚你做了什麼判斷或修改。
->
-> TODO:這裡必須由你自己填——例如你檢查了哪段程式碼、發現了什麼問題、做了什麼決定
-> (留白或寫「沒改」依規則本項記 0 分)。
+
+1. **`repeat` 型別檢查加上排除 `bool`**:AI 給的第一版只檢查
+   `isinstance(repeat, int) and repeat >= 1`,但 `bool` 在 Python 是 `int` 的子類別,
+   `timeit(repeat=True)` 會被當成 `repeat=1` 通過檢查,語意上完全說不通——
+   我要求加上 `isinstance(repeat, bool)` 的排除條件,讓 `True`/`False` 一律 `raise ValueError`
+   (見 `timing.py:17`)。
+
+2. **例外不計入 `records` 的做法**:AI 一開始用 `try/except` 包住 `f(*args, **kwargs)`,
+   例外發生時跳過 `append`。我覺得多一層 `try/except` 會讓人誤以為裝飾器有「吞掉例外再重拋」
+   的邏輯,改成把 `wrapper.records.append(elapsed)` 放在 `elapsed = ...` **之後**——
+   `f` 拋例外時,`elapsed` 那一行根本不會被執行到,`append` 自然也不會跑,例外原樣往外傳,
+   不需要額外的例外處理區塊(見 `timing.py:26-30`、對應測試
+   `test_exception_propagates_and_not_recorded`)。
+
+3. **`binary_search` 對未排序資料的行為**:規格只說「前提是已排序」,沒規定收到未排序資料
+   要怎麼處理。我決定**不檢查、不排序、不丟例外**——若強制檢查是否已排序,會讓函式從
+   O(log n) 退化成至少 O(n);若自動排序,又會違反「不可修改傳入的 data」。所以把這個
+   不確定性明文寫進 docstring(`search.py:16-21`):未排序時可能誤判回傳 -1 也可能找不到
+   本來存在的 target,責任在呼叫端,類似 Python `bisect` 模組的作法。
+
+4. **`benchmark.py` 的 target 選擇**:故意把 `target` 設成 `data` 的最後一個元素
+   (`N - 1`,見 `benchmark.py:11`),刻意製造 `linear_search` 的最壞情況,
+   這樣才能讓兩種搜尋的效能差異(實測約 2400 倍)在數據上明顯呈現,而不是隨機挑一個
+   平均情況的 target 模糊掉差異。
