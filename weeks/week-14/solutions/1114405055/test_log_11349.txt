@@ -1,0 +1,11 @@
+test_negative_value (test_11349.TestSymmetricMatrix.test_negative_value)
+含有負數的矩陣，必為 Non-symmetric ... ok
+test_sample (test_11349.TestSymmetricMatrix.test_sample)
+題目給的範例測資 ... ok
+test_single_element (test_11349.TestSymmetricMatrix.test_single_element)
+1x1 矩陣，只要非負一定是 Symmetric ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.063s
+
+OK

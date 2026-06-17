@@ -1,0 +1,11 @@
+test_no_square (test_11461.TestSquareNumbers.test_no_square)
+區間內沒有完全平方數 ... ok
+test_sample (test_11461.TestSquareNumbers.test_sample)
+題目給的範例測資 ... ok
+test_single_square (test_11461.TestSquareNumbers.test_single_square)
+a == b 且恰好是完全平方數 ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.062s
+
+OK

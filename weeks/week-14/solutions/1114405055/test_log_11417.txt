@@ -1,0 +1,9 @@
+test_minimum_n (test_11417.TestGcdSum.test_minimum_n)
+N = 2 時只有一對 (1, 2)，gcd(1,2) = 1 ... ok
+test_sample (test_11417.TestGcdSum.test_sample)
+題目給的範例測資 ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.048s
+
+OK

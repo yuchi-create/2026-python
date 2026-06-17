@@ -1,0 +1,9 @@
+test_doomsday_dates_are_wednesday (test_12019.TestDoomsDay.test_doomsday_dates_are_wednesday)
+每個月的 Doomsday 日期本身都應該是星期三 ... ok
+test_other_dates (test_12019.TestDoomsDay.test_other_dates)
+非 Doomsday 日期的星期推算 ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.043s
+
+OK
